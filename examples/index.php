@@ -1,10 +1,16 @@
 <?php
-require_once "vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/config.php";
+
+// Make sure config.php sets $key
+if (empty($key)) {
+    echo 'Please set <code>$key</code> in <code>examples/config.php</code>';
+    exit(1);
+}
 
 use GoogleCloudVisionPHP\GoogleCloudVision;
-// Add your key
-$key = "AIzaSyBzZsOM84kf4oU9DHLoZCrQec44EbXTgR4";
 ?>
+
 <h1>Face Detection</h1>
 <img src="images/brady.png" alt="" height="200">
 <?php
