@@ -8,7 +8,7 @@ if (empty($key)) {
     exit(1);
 }
 
-use GoogleCloudVisionPHP\GoogleCloudVision;
+use Wikisource\GoogleCloudVisionPHP\GoogleCloudVision;
 ?>
 
 <h1>Face Detection</h1>
