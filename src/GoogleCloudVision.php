@@ -1,25 +1,22 @@
 <?php
-namespace GoogleCloudVisionPHP;
+
+namespace Wikisource\GoogleCloudVisionPHP;
 
 use Exception;
 
 class GoogleCloudVision
 {
+
     protected $features = array();
-
     protected $imageContext = array();
-
     protected $image = array();
-
     protected $requestBody = array();
-
     protected $version = "v1";
-
     protected $endpoint = "https://vision.googleapis.com/";
-
     protected $key;
 
-    public function setEndpoint($newEndpoint) {
+    public function setEndpoint($newEndpoint)
+    {
         $this->endpoint = $newEndpoint;
     }
 
@@ -29,7 +26,7 @@ class GoogleCloudVision
             $this->image['source']['gcs_image_uri'] = $input;
         } elseif ($type == "FILE") {
             $this->image['content'] = $this->convertImgtoBased64($input);
-        } elseif($type == "RAW") {
+        } elseif ($type == "RAW") {
             $this->image['content'] = base64_encode($input);
         }
         return $this->setRequestBody();
@@ -79,30 +76,37 @@ class GoogleCloudVision
     {
         return $this->addFeature("TYPE_UNSPECIFIED", $maxResults = 1);
     }
+
     public function addFeatureFaceDetection($maxResults = 1)
     {
         return $this->addFeature("FACE_DETECTION", $maxResults = 1);
     }
+
     public function addFeatureLandmarkDetection($maxResults = 1)
     {
         return $this->addFeature("LANDMARK_DETECTION", $maxResults = 1);
     }
+
     public function addFeatureLogoDetection($maxResults = 1)
     {
         return $this->addFeature("LOGO_DETECTION", $maxResults = 1);
     }
+
     public function addFeatureLabelDetection($maxResults = 1)
     {
         return $this->addFeature("LABEL_DETECTION", $maxResults = 1);
     }
+
     public function addFeatureOCR($maxResults = 1)
     {
         return $this->addFeature("TEXT_DETECTION", $maxResults = 1);
     }
+
     public function addFeatureSafeSeachDetection($maxResults = 1)
     {
         return $this->addFeature("SAFE_SEARCH_DETECTION", $maxResults = 1);
     }
+
     public function addFeatureImageProperty($maxResults = 1)
     {
         return $this->addFeature("IMAGE_PROPERTIES", $maxResults = 1);
@@ -111,7 +115,8 @@ class GoogleCloudVision
     public function request($endpoint = "annotate")
     {
         if (empty($this->key)) {
-            throw new Exception("API Key is empty Please grant from https://console.cloud.google.com/apis/credentials", 1);
+            $msg = "API Key is empty, please grant from https://console.cloud.google.com/apis/credentials";
+            throw new Exception($msg);
         }
 
         if (empty($this->features)) {
@@ -145,5 +150,4 @@ class GoogleCloudVision
         $res = json_decode(curl_exec($ch), true);
         return $res;
     }
-
 }

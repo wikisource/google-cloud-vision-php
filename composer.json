@@ -1,18 +1,23 @@
 {
-    "name": "thangman22/google-cloud-vision-php",
-    "type": "vcs",
+    "name": "wikisource/google-cloud-vision-php",
+    "license": "GPL-3.0+",
     "authors": [
         {
             "name": "Warat Wongmaneekit",
             "email": "canopybanj@gmail.com"
+        },
+        {
+            "name": "Sam Wilson",
+            "email": "sam@samwilson.id.au"
         }
     ],
     "autoload": {
-      "psr-4": {
-        "GoogleCloudVisionPHP\\": "src"
-      }
+        "psr-4": {
+            "Wikisource\\GoogleCloudVisionPHP\\": "src",
+            "Wikisource\\GoogleCloudVisionPHP\\Tests\\": "tests"
+        }
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "~5.5"
     }
 }

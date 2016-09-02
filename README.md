@@ -1,6 +1,10 @@
+Google Cloud Vision PHP
+=======================
+
+This project hosts the PHP library for the various RESTful based Google Cloud Vision API.
+[Read about Google Cloud Vision API] (https://cloud.google.com/vision/)
+
 [![Build Status](https://travis-ci.org/thangman22/google-cloud-vision-php.svg?branch=master)](https://travis-ci.org/thangman22/google-cloud-vision-php)
-# GoogleCloudVisionPHP
-This project hosts the PHP library for the various RESTful based Google Cloud Vision API(s) [Read about Google Cloud Vision API] (https://cloud.google.com/vision/)
 
 ##Features
 *   Support almost feature of Google Cloud Vision API (Version 1)
