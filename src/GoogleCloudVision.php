@@ -19,7 +19,7 @@ class GoogleCloudVision
     protected $key;
 
     /** @var int The maximum size allowed for the image, in bytes. */
-    protected $imageMaxSize = 1024 * 1024 * 4;
+    protected $imageMaxSize;
 
     /** @var string Image type: Google Cloud Storage URI. Note the typo. */
     const IMAGE_TYPE_GCS = 'GSC';
@@ -29,6 +29,14 @@ class GoogleCloudVision
 
     /** @var string Image type: raw data. */
     const IMAGE_TYPE_RAW = 'RAW';
+
+    /**
+     * Create a new GCV API object.
+     */
+    public function __construct()
+    {
+        $this->imageMaxSize = 1024 * 1024 * 4;
+    }
 
     /**
      * Change the URL for the API endpoint. Defaults to https://vision.googleapis.com/ but may need to be changed for
