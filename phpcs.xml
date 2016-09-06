@@ -8,9 +8,26 @@
     <file>./</file>
     <exclude-pattern>./vendor/*</exclude-pattern>
 
+<!--    <rule ref="Squiz">
+        <exclude name="Squiz.Strings.DoubleQuoteUsage.NotRequired" />
+        <exclude name="Squiz.PHP.DiscouragedFunctions.Discouraged" />
+        <exclude name="Squiz.Commenting.ClosingDeclarationComment.Missing" />
+        <exclude name="Squiz.Commenting.FileComment.MissingPackageTag" />
+        <exclude name="Squiz.WhiteSpace.FunctionClosingBraceSpace.SpacingBeforeClose" />
+        <exclude name="Squiz.WhiteSpace.FunctionSpacing.After" />
+        <exclude name="Generic.Files.LineLength.TooLong" />
+        <exclude name="Generic.Commenting.DocComment.TagValueIndent" />
+        <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame" />
+        <exclude name="Squiz.WhiteSpace.FunctionSpacing.Before" />
+        <exclude name="Squiz.Files.FileExtension.ClassFound" />
+        <exclude name="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing" />
+        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamName" />
+        <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar" />
+    </rule>-->
     <rule ref="PSR2" />
+    <rule ref="Squiz.Strings.ConcatenationSpacing" />
 
-    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+<!--    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
         <exclude-pattern>./index.php</exclude-pattern>
-    </rule>
+    </rule>-->
 </ruleset>

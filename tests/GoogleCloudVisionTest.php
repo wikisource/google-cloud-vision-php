@@ -1,75 +1,124 @@
 <?php
+/**
+ * This file contains only the GoogleCloudVisionTest class.
+ */
 
 namespace Wikisource\GoogleCloudVisionPHP\Tests;
 
 use Wikisource\GoogleCloudVisionPHP\GoogleCloudVision;
 use Wikisource\GoogleCloudVisionPHP\LimitExceededException;
 
+/**
+ * Test all aspects of the GoogleCloudVision.
+ */
 class GoogleCloudVisionTest extends \PHPUnit_Framework_TestCase
 {
 
-    /** @var GoogleCloudVision */
+    /**
+     * The GCV object used by all the tests.
+     *
+     * @var GoogleCloudVision
+     */
     protected $gcv;
 
-    /** @var string The full filesystem path to the dog.jpg test image. */
+    /**
+     * The full filesystem path to the dog.jpg test image.
+     *
+     * @var string
+     */
     protected $testImageDog;
 
-    /** @var string The full filesystem path to the Munich_subway_station_Hasenbergl_2.JPG test image. */
+    /**
+     * The full filesystem path to the Munich_subway_station_Hasenbergl_2.JPG test image.
+     *
+     * @var string
+     */
     protected $testImageMunich;
 
+    /**
+     * Set up a couple of test images and a GCV object to work with for all the tests.
+     *
+     * @return void
+     */
     protected function setUp()
     {
-        $this->testImageDog = realpath(__DIR__ . '/dog.jpg');
-        $this->testImageMunich = realpath(__DIR__ . '/Munich_subway_station_Hasenbergl_2.JPG');
+        $this->testImageDog = realpath(__DIR__.'/dog.jpg');
+        $this->testImageMunich = realpath(__DIR__.'/Munich_subway_station_Hasenbergl_2.JPG');
         $this->gcv = new GoogleCloudVision();
     }
 
+    /**
+     * Test that converting a test image to base65 results in the expected output.
+     *
+     * @return void
+     */
     public function testConvertImgtoBased64()
     {
         $countbase64 = strlen($this->gcv->convertImgtoBased64($this->testImageDog));
         $this->assertEquals($countbase64, 30420);
     }
 
+    /**
+     * Test that the image can be set from a filename.
+     *
+     * @return void
+     */
     public function testSetImageWithFile()
     {
         $request = $this->gcv->setImage($this->testImageDog);
         $this->assertNotNull($request['requests'][0]['image']['content']);
     }
 
+    /**
+     * Test that the image can be set with raw data.
+     *
+     * @return void
+     */
     public function testSetRawImage()
     {
         $request = $this->gcv->setImage(file_get_contents($this->testImageDog), GoogleCloudVision::IMAGE_TYPE_RAW);
         $this->assertEquals(30420, strlen($request['requests'][0]['image']['content']));
     }
 
+    /**
+     * Test that the image can be set as a GCS URI.
+     *
+     * @return void
+     */
     public function testSetImageWithGsc()
     {
-        $request = $this->gcv->setImage($this->testImageDog, GoogleCloudVision::IMAGE_TYPE_GCS);
+        $request = $this->gcv->setImage('gs://bucket_name/object_name', GoogleCloudVision::IMAGE_TYPE_GCS);
         $this->assertNotNull($request['requests'][0]['image']['source']['gcsImageUri']);
     }
 
+    /**
+     * Test that adding a feature adds the correct type to the request parameters.
+     *
+     * @return void
+     */
     public function testAddType()
     {
-        $request = $this->gcv->addFeature("LABEL_DETECTION", 1);
+        $request = $this->gcv->addFeature("LABEL_DETECTION");
         $this->assertEquals($request['requests'][0]['features'][0]['type'], "LABEL_DETECTION");
     }
 
+    /**
+     * Test that setting the Image Context correctly sets the relevant request parameters.
+     *
+     * @return void
+     */
     public function testSetImageContext()
     {
         $request = $this->gcv->setImageContext(array("languageHints" => array("th", "en")));
         $this->assertEquals($request['requests'][0]['imageContext']['languageHints'][0], "th");
+        $this->assertEquals($request['requests'][0]['imageContext']['languageHints'][1], "en");
     }
 
     /**
+     * Test that not setting the image contect to an array throws an exception.
+     *
      * @expectedException Exception
-     */
-    public function testSetImageException()
-    {
-        $request = $this->gcv->addFeature("dddd", "dddd");
-    }
-
-    /**
-     * @expectedException Exception
+     * @return void
      */
     public function testSetImageContextException()
     {
@@ -77,7 +126,10 @@ class GoogleCloudVisionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test that a request without setting the key throws an exception.
+     *
      * @expectedException Exception
+     * @return void
      */
     public function testRequestWithoutKey()
     {
@@ -87,7 +139,10 @@ class GoogleCloudVisionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test that a request without data throws an exception.
+     *
      * @expectedException Exception
+     * @return void
      */
     public function testRequestWithoutData()
     {
@@ -96,11 +151,13 @@ class GoogleCloudVisionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group integration
+     * Test that the request can be sent.
+     *
+     * @group requires-key
+     * @return void
      */
     public function testRequest()
     {
-
         $this->gcv->setKey(getenv('GCV_KEY'));
         $this->gcv->setImage($this->testImageDog);
         $this->gcv->addFeature("LABEL_DETECTION", 1);
@@ -115,6 +172,8 @@ class GoogleCloudVisionTest extends \PHPUnit_Framework_TestCase
      * There are four tests for this, 2 sizes of file multiplied by 2 ways of passing the file to the GCV class.
      * Only the large ones need to be in their own test method,
      * becuase it's only possible to test for a single Exception at a time.
+     *
+     * @return void
      */
     public function testImageSizeLimit()
     {
@@ -124,6 +183,11 @@ class GoogleCloudVisionTest extends \PHPUnit_Framework_TestCase
         $this->gcv->setImage(file_get_contents($this->testImageDog), GoogleCloudVision::IMAGE_TYPE_RAW);
     }
 
+    /**
+     * Test image size limits for large files when passed as a file name.
+     *
+     * @return void
+     */
     public function testImageSizeLimitLargeFile()
     {
         // Test a large image by filename.
@@ -132,10 +196,27 @@ class GoogleCloudVisionTest extends \PHPUnit_Framework_TestCase
         $this->gcv->setImage($this->testImageMunich);
     }
 
+    /**
+     * Test image size limits for large files when passed as raw data.
+     *
+     * @return void
+     */
     public function testImageSizeLimitLargeRaw()
     {
         // Test a large image by raw data.
         $this->expectException(LimitExceededException::class);
         $this->gcv->setImage(file_get_contents($this->testImageMunich), GoogleCloudVision::IMAGE_TYPE_RAW);
+    }
+
+    /**
+     * An image can be passed in as a URL.
+     *
+     * @return void
+     */
+    public function testImageFilenameCanBeUrl()
+    {
+        $url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/';
+        $url .= 'Munich_subway_station_Hasenbergl_2.JPG/800px-Munich_subway_station_Hasenbergl_2.JPG';
+        $this->gcv->setImage($url);
     }
 }

@@ -1,9 +1,13 @@
 <?php
-require_once __DIR__ . "/../vendor/autoload.php";
-require_once __DIR__ . "/config.php";
+/**
+ * This is the function example script. Load it in your browser to see the result.
+ */
 
-// Make sure config.php sets $key
-if (empty($key)) {
+require_once __DIR__."/../vendor/autoload.php";
+require_once __DIR__."/config.php";
+
+// Make sure config.php sets the $key variable.
+if (empty($key) === true) {
     echo 'Please set <code>$key</code> in <code>examples/config.php</code>';
     exit(1);
 }
@@ -78,8 +82,7 @@ $gcv = new GoogleCloudVision();
 $gcv->setKey($key);
 $gcv->setImage("images/thai.gif");
 $gcv->addFeatureOCR(1);
-$gcv->setImageContext(array("languageHints"=>array("th")));
+$gcv->setImageContext(array("languageHints" => array("th")));
 echo "<pre style='max-height:300px; overflow:scroll;'>";
-var_dump($gcv->request());
+print_r($gcv->request());
 echo "</pre>";
-?>

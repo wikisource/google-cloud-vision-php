@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file contains only the GoogleCloudVision class.
+ */
 
 namespace Wikisource\GoogleCloudVisionPHP;
 
@@ -92,12 +95,19 @@ class GoogleCloudVision
      */
     public function convertImgtoBased64($path)
     {
-        $size = filesize($path);
-        if ($size > $this->imageMaxSize) {
-            $msg = "Image size of $path ($size) exceeds permitted size ($this->imageMaxSize)";
-            throw new LimitExceededException($msg, 2);
+        $msg = "Image size of %s (%s) exceeds permitted size (%s)";
+        // For files we can just check their size.
+        if (is_file($path)) {
+            $size = filesize($path);
+            if ($size > $this->imageMaxSize) {
+                throw new LimitExceededException(sprintf($msg, $path, $size, $this->imageMaxSize), 2);
+            }
         }
         $data = file_get_contents($path);
+        // For URLs, we have to wait till we've got the contents.
+        if (strlen($data) > $this->imageMaxSize) {
+             throw new LimitExceededException(sprintf($msg, $path, $size, $this->imageMaxSize), 2);
+        }
         return base64_encode($data);
     }
 
@@ -184,33 +194,49 @@ class GoogleCloudVision
      * Send the request to Google and get the results.
      *
      * @param string $apiMethod Which API method to use. Currently can only be 'annotate'.
+     *
      * @return string[] The results of the request.
-     * @throws Exception
+     * @throws Exception If any of the key, features, or image have not been set yet.
      */
     public function request($apiMethod = "annotate")
     {
-        if (empty($this->key)) {
+        if (empty($this->key) === true) {
             $msg = "API Key is empty, please grant from https://console.cloud.google.com/apis/credentials";
             throw new Exception($msg);
         }
 
-        if (empty($this->features)) {
+        if (empty($this->features) === true) {
             throw new Exception("Features is can't empty.", 1);
         }
 
-        if (empty($this->image)) {
+        if (empty($this->image) === true) {
             throw new Exception("Images is can't empty.", 1);
         }
 
-        $url = $this->endpoint . $this->version . "/images:$apiMethod?key=" . $this->key;
+        $url = $this->endpoint.$this->version."/images:$apiMethod?key=".$this->key;
         return $this->requestServer($url, $this->requestBody);
     }
 
+    /**
+     * Set the API key.
+     *
+     * @param string $key The API key.
+     *
+     * @return void
+     */
     public function setKey($key)
     {
         $this->key = $key;
     }
 
+    /**
+     * Execute the request and return the result.
+     *
+     * @param string $url The full URL to query.
+     * @param string $data The data to send.
+     *
+     * @return string[] The resulting information about the image.
+     */
     protected function requestServer($url, $data)
     {
         $ch = curl_init();

@@ -7,5 +7,5 @@ php:
 install:
   - composer install
 script:
-  - $TRAVIS_BUILD_DIR/vendor/bin/phpunit --exclude-group=integration
+  - $TRAVIS_BUILD_DIR/vendor/bin/phpunit --exclude-group=requires-key
   - $TRAVIS_BUILD_DIR/vendor/bin/phpcs --standard=$TRAVIS_BUILD_DIR/phpcs.xml
