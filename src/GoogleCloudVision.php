@@ -180,7 +180,14 @@ class GoogleCloudVision
         return $this->addFeature("IMAGE_PROPERTIES", $maxResults);
     }
 
-    public function request($endpoint = "annotate")
+    /**
+     * Send the request to Google and get the results.
+     *
+     * @param string $apiMethod Which API method to use. Currently can only be 'annotate'.
+     * @return string[] The results of the request.
+     * @throws Exception
+     */
+    public function request($apiMethod = "annotate")
     {
         if (empty($this->key)) {
             $msg = "API Key is empty, please grant from https://console.cloud.google.com/apis/credentials";
@@ -195,9 +202,7 @@ class GoogleCloudVision
             throw new Exception("Images is can't empty.", 1);
         }
 
-        if ($endpoint == "annotate") {
-            $url = $this->endpoint . $this->version . "/images:annotate?key=" . $this->key;
-        }
+        $url = $this->endpoint . $this->version . "/images:$apiMethod?key=" . $this->key;
         return $this->requestServer($url, $this->requestBody);
     }
 
