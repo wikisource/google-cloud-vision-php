@@ -4,6 +4,7 @@ Google Cloud Vision PHP
 This is a simple PHP interface to the [Google Cloud Vision API](https://cloud.google.com/vision/).
 
 [![Build Status](https://travis-ci.org/wikisource/google-cloud-vision-php.svg?branch=master)](https://travis-ci.org/wikisource/google-cloud-vision-php)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wikisource/google-cloud-vision-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wikisource/google-cloud-vision-php/?branch=master)
 
 Features:
 
