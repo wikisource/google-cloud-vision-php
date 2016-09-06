@@ -64,5 +64,6 @@ $response = $gcv->request();
 This is a fork of [thangman22's original library](https://github.com/thangman22/google-cloud-vision-php), and all credit goes to them.
 
 Test images are from:
-1. `Munich_subway_station_Hasenbergl_2.JPG` by Martin Falbisoner [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0)]
+
+1. `Munich_subway_station_Hasenbergl_2.JPG` by Martin Falbisoner [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0)
    via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File%3AMunich_subway_station_Hasenbergl_2.JPG)
