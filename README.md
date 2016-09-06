@@ -1,31 +1,37 @@
 Google Cloud Vision PHP
 =======================
 
-This project hosts the PHP library for the various RESTful based Google Cloud Vision API.
-[Read about Google Cloud Vision API] (https://cloud.google.com/vision/)
+This is a simple PHP interface to the [Google Cloud Vision API](https://cloud.google.com/vision/).
 
-[![Build Status](https://travis-ci.org/thangman22/google-cloud-vision-php.svg?branch=master)](https://travis-ci.org/thangman22/google-cloud-vision-php)
+[![Build Status](https://travis-ci.org/wikisource/google-cloud-vision-php.svg?branch=master)](https://travis-ci.org/wikisource/google-cloud-vision-php)
 
-##Features
-*   Support almost feature of Google Cloud Vision API (Version 1)
-*   Auto encode images to based64
+Features:
 
-##how to get service key
-[Google Cloud Vision API Document](https://cloud.google.com/vision/docs/getting-started)
+* Supports almost all features of the Cloud Vision API (version 1).
+* Loads images from files, URLs, raw data, or Google Cloud Storage.
 
-##Requirements
-*   PHP >= 5.4 with cURL extension
+## Installation
 
-##Installation
-Add this to your composer.json
+Requirements:
+
+* PHP >= 5.6
+* PHP cURL extension
+* API key (see the [Getting Started](https://cloud.google.com/vision/docs/getting-started) documentation)
+
+To install, first add this to your `composer.json`:
 
 ```json
-"require": {
-        "thangman22/google-cloud-vision-php": "*"
+    "require": {
+        "wikisource/google-cloud-vision-php": "*"
     }
 ```
 
-##Example
+...and run `composer update`.
+
+Then copy `config.php.dist` to `config.php` and add your API key to that file.
+
+## Usage
+
 ```php
 use GoogleCloudVisionPHP\GoogleCloudVision;
 
@@ -52,6 +58,8 @@ $gcv->addFeatureImageProperty(1);
 $gcv->setImageContext(array("languageHints"=>array("th")));
 
 $response = $gcv->request();
-
 ```
 
+## Kudos
+
+This is a fork of [thangman22's original library](https://github.com/thangman22/google-cloud-vision-php), and all credit goes to them.

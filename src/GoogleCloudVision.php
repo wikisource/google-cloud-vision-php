@@ -15,18 +15,35 @@ class GoogleCloudVision
     protected $endpoint = "https://vision.googleapis.com/";
     protected $key;
 
+    const IMAGE_TYPE_GSC = 'GSC';
+    const IMAGE_TYPE_FILE = 'FILE';
+    const IMAGE_TYPE_RAW = 'RAW';
+
     public function setEndpoint($newEndpoint)
     {
         $this->endpoint = $newEndpoint;
     }
 
-    public function setImage($input, $type = "FILE")
+    /**
+     * Set the image that will be sent to the API.
+     *
+     * An image can be set from a filename or URL, raw data, or a Google Cloud Storage item.
+     *
+     * A Google Cloud Storage image URI must be in the following form: gs://bucket_name/object_name.
+     * Object versioning is not supported.
+     * Read more: https://cloud.google.com/vision/reference/rest/v1/images/annotate#imagesource
+     *
+     * @param mixed $input The filename, URL, data, etc.
+     * @param string $type The type that $input should be treated as.
+     * @return string[] The request body.
+     */
+    public function setImage($input, $type = self::IMAGE_TYPE_FILE)
     {
-        if ($type == "GSC") {
+        if ($type === self::IMAGE_TYPE_GSC) {
             $this->image['source']['gcs_image_uri'] = $input;
-        } elseif ($type == "FILE") {
+        } elseif ($type === self::IMAGE_TYPE_FILE) {
             $this->image['content'] = $this->convertImgtoBased64($input);
-        } elseif ($type == "RAW") {
+        } elseif ($type === self::IMAGE_TYPE_RAW) {
             $this->image['content'] = base64_encode($input);
         }
         return $this->setRequestBody();
@@ -38,6 +55,11 @@ class GoogleCloudVision
         return base64_encode($data);
     }
 
+    /**
+     * Set the request body, based on the image, features, and imageContext.
+     *
+     * @return string[]
+     */
     protected function setRequestBody()
     {
         if (!empty($this->image)) {
