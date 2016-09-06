@@ -2,9 +2,9 @@
 
 namespace Wikisource\GoogleCloudVisionPHP\Tests;
 
-use GoogleCloudVisionPHP\GoogleCloudVision;
+use Wikisource\GoogleCloudVisionPHP\GoogleCloudVision;
 
-class GoogleCloudVisionTest extends PHPUnit_Framework_TestCase
+class GoogleCloudVisionTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $gcv;
@@ -87,7 +87,9 @@ class GoogleCloudVisionTest extends PHPUnit_Framework_TestCase
         $response = $this->gcv->request();
     }
 
-    //Integration Test
+    /**
+     * @group integration
+     */
     public function testRequest()
     {
 

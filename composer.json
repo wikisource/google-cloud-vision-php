@@ -1,5 +1,9 @@
 {
     "name": "wikisource/google-cloud-vision-php",
+    "description": "A PHP interface to Google's Cloud Vision API.",
+    "type": "library",
+    "keywords": ["Google", "OCR", "vision", "images", "APIs", "transcribing"],
+    "homepage": "https://github.com/wikisource/google-cloud-vision-php",
     "license": "GPL-3.0+",
     "authors": [
         {
@@ -8,16 +12,24 @@
         },
         {
             "name": "Sam Wilson",
-            "email": "sam@samwilson.id.au"
+            "email": "sam@samwilson.id.au",
+            "homepage": "https://samwilson.id.au/"
         }
     ],
+    "support": {
+        "issues": "https://github.com/wikisource/google-cloud-vision-php/issues",
+        "source": "https://github.com/wikisource/google-cloud-vision-php.git",
+        "docs": "https://github.com/wikisource/google-cloud-vision-php#google-cloud-vision-php",
+        "rss": "https://github.com/wikisource/google-cloud-vision-php/commits/master.atom"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.5",
+        "squizlabs/php_codesniffer": "~2.0"
+    },
     "autoload": {
         "psr-4": {
             "Wikisource\\GoogleCloudVisionPHP\\": "src",
             "Wikisource\\GoogleCloudVisionPHP\\Tests\\": "tests"
         }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "~5.5"
     }
 }
