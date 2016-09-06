@@ -95,19 +95,15 @@ class GoogleCloudVision
      */
     public function convertImgtoBased64($path)
     {
-        $msg = "Image size of %s (%s) exceeds permitted size (%s)";
-        // For files we can just check their size.
-        if (is_file($path)) {
-            $size = filesize($path);
-            if ($size > $this->imageMaxSize) {
-                throw new LimitExceededException(sprintf($msg, $path, $size, $this->imageMaxSize), 2);
-            }
-        }
+        // Get the data.
         $data = file_get_contents($path);
-        // For URLs, we have to wait till we've got the contents.
-        if (strlen($data) > $this->imageMaxSize) {
-             throw new LimitExceededException(sprintf($msg, $path, $size, $this->imageMaxSize), 2);
+        // Check the size.
+        $size = strlen($data);
+        if ($size > $this->imageMaxSize) {
+            $msg = "Image size of %s (%s) exceeds permitted size (%s)";
+            throw new LimitExceededException(sprintf($msg, $path, $size, $this->imageMaxSize), 2);
         }
+        // Return encoded data.
         return base64_encode($data);
     }
 
@@ -233,7 +229,7 @@ class GoogleCloudVision
      * Execute the request and return the result.
      *
      * @param string $url The full URL to query.
-     * @param string $data The data to send.
+     * @param string[] $data The data to send.
      *
      * @return string[] The resulting information about the image.
      */
