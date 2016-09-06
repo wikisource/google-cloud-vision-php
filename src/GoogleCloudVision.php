@@ -15,13 +15,41 @@ class GoogleCloudVision
     protected $endpoint = "https://vision.googleapis.com/";
     protected $key;
 
-    const IMAGE_TYPE_GSC = 'GSC';
+    /** @var int The maximum size allowed for the image, in bytes. */
+    protected $imageMaxSize = 1024 * 1024 * 4;
+
+    /** @var string Image type: Google Cloud Storage URI. Note the typo. */
+    const IMAGE_TYPE_GCS = 'GSC';
+
+    /** @var string Image type: file path or URL. */
     const IMAGE_TYPE_FILE = 'FILE';
+
+    /** @var string Image type: raw data. */
     const IMAGE_TYPE_RAW = 'RAW';
 
+    /**
+     * Change the URL for the API endpoint. Defaults to https://vision.googleapis.com/ but may need to be changed for
+     * various reasons (e.g. if routing through a proxy server).
+     *
+     * @param string $newEndpoint The new URL of the API endpoint.
+     */
     public function setEndpoint($newEndpoint)
     {
         $this->endpoint = $newEndpoint;
+    }
+
+    /**
+     * Set the permitted maximum size of images. This defaults to 4 MB as per the Google Clound Vision API limits documentation.
+     *
+     * @param ing $newSize
+     * @throws Exception
+     */
+    public function setImageMaxSize($newSize)
+    {
+        if (!is_int($newSize)) {
+            throw new Exception("Image size must be specified in integer bytes, '$newSize' given");
+        }
+        $this->imageMaxSize = $newSize;
     }
 
     /**
@@ -36,21 +64,37 @@ class GoogleCloudVision
      * @param mixed $input The filename, URL, data, etc.
      * @param string $type The type that $input should be treated as.
      * @return string[] The request body.
+     * @throws LimitExceededException When the image size is over the maximum permitted.
      */
     public function setImage($input, $type = self::IMAGE_TYPE_FILE)
     {
-        if ($type === self::IMAGE_TYPE_GSC) {
-            $this->image['source']['gcs_image_uri'] = $input;
+        if ($type === self::IMAGE_TYPE_GCS) {
+            $this->image['source']['gcsImageUri'] = $input;
         } elseif ($type === self::IMAGE_TYPE_FILE) {
             $this->image['content'] = $this->convertImgtoBased64($input);
         } elseif ($type === self::IMAGE_TYPE_RAW) {
+            $size = strlen($input);
+            if ($size > $this->imageMaxSize) {
+                throw new LimitExceededException("Image size ($size) exceeds permitted size ($this->imageMaxSize)", 1);
+            }
             $this->image['content'] = base64_encode($input);
         }
         return $this->setRequestBody();
     }
 
+    /**
+     * Fetch base64-encoded data of the specified image.
+     *
+     * @param string $path Path to the image file. Anything supported by file_get_contents is suitable.
+     * @return string The encoded data as a string or FALSE on failure.
+     * @throws LimitExceededException When the image size is over the maximum permitted.
+     */
     public function convertImgtoBased64($path)
     {
+        $size = filesize($path);
+        if ($size > $this->imageMaxSize) {
+            throw new LimitExceededException("Image size of $path ($size) exceeds permitted size ($this->imageMaxSize)", 2);
+        }
         $data = file_get_contents($path);
         return base64_encode($data);
     }

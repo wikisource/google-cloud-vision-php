@@ -22,13 +22,11 @@ To install, first add this to your `composer.json`:
 
 ```json
     "require": {
-        "wikisource/google-cloud-vision-php": "*"
+        "wikisource/google-cloud-vision-php": "~1.1"
     }
 ```
 
 ...and run `composer update`.
-
-Then copy `config.php.dist` to `config.php` and add your API key to that file.
 
 ## Usage
 
@@ -63,3 +61,7 @@ $response = $gcv->request();
 ## Kudos
 
 This is a fork of [thangman22's original library](https://github.com/thangman22/google-cloud-vision-php), and all credit goes to them.
+
+Test images are from:
+1. `Munich_subway_station_Hasenbergl_2.JPG` by Martin Falbisoner [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0)]
+   via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File%3AMunich_subway_station_Hasenbergl_2.JPG)
