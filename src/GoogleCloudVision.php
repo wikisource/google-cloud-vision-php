@@ -39,7 +39,8 @@ class GoogleCloudVision
     }
 
     /**
-     * Set the permitted maximum size of images. This defaults to 4 MB as per the Google Clound Vision API limits documentation.
+     * Set the permitted maximum size of images.
+     * This defaults to 4 MB as per the Google Clound Vision API limits documentation.
      *
      * @param ing $newSize
      * @throws Exception
@@ -93,7 +94,8 @@ class GoogleCloudVision
     {
         $size = filesize($path);
         if ($size > $this->imageMaxSize) {
-            throw new LimitExceededException("Image size of $path ($size) exceeds permitted size ($this->imageMaxSize)", 2);
+            $msg = "Image size of $path ($size) exceeds permitted size ($this->imageMaxSize)";
+            throw new LimitExceededException($msg, 2);
         }
         $data = file_get_contents($path);
         return base64_encode($data);

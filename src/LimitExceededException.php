@@ -2,6 +2,6 @@
 
 namespace Wikisource\GoogleCloudVisionPHP;
 
-class LimitExceededException extends \Exception {
-    
+class LimitExceededException extends \Exception
+{
 }
