@@ -1,6 +1,7 @@
-test/config.php
-examples/config.php
-.phpintel
-nbproject
-vendor
-composer.lock
+/tests/config.php
+/examples/config.php
+/.phpintel
+/nbproject
+/vendor
+/composer.lock
+

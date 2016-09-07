@@ -48,6 +48,21 @@ class GoogleCloudVisionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Get the API key from the config file in this directory. This is used by every test in the requires-key group.
+     *
+     * @return string The API key.
+     * @throws \Exception If the $key variable is not set in the config file.
+     */
+    protected function getApiKeyFromConfigFile()
+    {
+        require __DIR__.'/config.php';
+        if (!isset($key)) {
+            throw new \Exception('Unable to load key from config.php (please set $key)');
+        }
+        return $key;
+    }
+
+    /**
      * Test that converting a test image to base65 results in the expected output.
      *
      * @return void
@@ -158,10 +173,9 @@ class GoogleCloudVisionTest extends \PHPUnit_Framework_TestCase
      */
     public function testRequest()
     {
-        $this->gcv->setKey(getenv('GCV_KEY'));
+        $this->gcv->setKey($this->getApiKeyFromConfigFile());
         $this->gcv->setImage($this->testImageDog);
         $this->gcv->addFeature("LABEL_DETECTION", 1);
-
         $response = $this->gcv->request();
         $this->assertNotNull($response['responses']);
     }
