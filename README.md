@@ -16,8 +16,7 @@ Features:
 Requirements:
 
 * PHP >= 5.6
-* PHP cURL extension
-* API key (see the [Getting Started](https://cloud.google.com/vision/docs/getting-started) documentation)
+* API key (see Google's [Getting Started](https://cloud.google.com/vision/docs/getting-started) documentation)
 
 To install, first add this to your `composer.json`:
 
