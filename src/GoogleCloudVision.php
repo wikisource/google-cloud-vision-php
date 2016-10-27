@@ -6,6 +6,7 @@
 namespace Wikisource\GoogleCloudVisionPHP;
 
 use Exception;
+use GuzzleHttp\Client;
 
 class GoogleCloudVision
 {
@@ -243,14 +244,8 @@ class GoogleCloudVision
      */
     protected function requestServer($url, $data)
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-        $res = json_decode(curl_exec($ch), true);
-        return $res;
+        $client = new Client();
+        $result = $client->post($url, ['json' => $data]);
+        return \GuzzleHttp\json_decode($result->getBody(), true);
     }
 }
