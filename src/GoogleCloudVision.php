@@ -52,9 +52,9 @@ class GoogleCloudVision
 
     /**
      * Set the permitted maximum size of images.
-     * This defaults to 4 MB as per the Google Clound Vision API limits documentation.
+     * This defaults to 4 MB as per the Google Cloud Vision API limits documentation.
      *
-     * @param ing $newSize
+     * @param int $newSize
      * @throws Exception
      */
     public function setImageMaxSize($newSize)
@@ -135,6 +135,16 @@ class GoogleCloudVision
         return $this->requestBody;
     }
 
+    /**
+     * Add a feature request.
+     * @link https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#Type
+     * @deprecated Use one of the explicit addFeature* methods instead.
+     * @todo Make this protected visibility.
+     * @param string $type One of the type values.
+     * @param int $maxResults
+     * @return string[]
+     * @throws Exception
+     */
     public function addFeature($type, $maxResults = 1)
     {
 
@@ -155,44 +165,125 @@ class GoogleCloudVision
         return $this->setRequestBody();
     }
 
+    /**
+     * Unspecified feature type.
+     * @param int $maxResults
+     * @return string[]
+     */
     public function addFeatureUnspecified($maxResults = 1)
     {
         return $this->addFeature("TYPE_UNSPECIFIED", $maxResults);
     }
 
+    /**
+     * Run face detection.
+     * @param int $maxResults
+     * @return string[]
+     */
     public function addFeatureFaceDetection($maxResults = 1)
     {
         return $this->addFeature("FACE_DETECTION", $maxResults);
     }
 
+    /**
+     * Run landmark detection.
+     * @param int $maxResults
+     * @return string[]
+     */
     public function addFeatureLandmarkDetection($maxResults = 1)
     {
         return $this->addFeature("LANDMARK_DETECTION", $maxResults);
     }
 
+    /**
+     * Run logo detection.
+     * @param int $maxResults
+     * @return string[]
+     */
     public function addFeatureLogoDetection($maxResults = 1)
     {
         return $this->addFeature("LOGO_DETECTION", $maxResults);
     }
 
+    /**
+     * Run label detection.
+     * @param int $maxResults
+     * @return string[]
+     */
     public function addFeatureLabelDetection($maxResults = 1)
     {
         return $this->addFeature("LABEL_DETECTION", $maxResults);
     }
 
-    public function addFeatureOCR($maxResults = 1)
+    /**
+     * Run OCR.
+     * @param int $maxResults
+     * @return string[]
+     */
+    public function addFeatureTextDetection($maxResults = 1)
     {
         return $this->addFeature("TEXT_DETECTION", $maxResults);
     }
 
+    /**
+     * Run OCR.
+     * @deprecated Use self::addFeatureTextDetection() instead.
+     * @param int $maxResults
+     * @return string[]
+     */
+    public function addFeatureOCR($maxResults = 1)
+    {
+        return $this->addFeatureTextDetection($maxResults);
+    }
+
+    /**
+     * Run dense text document OCR. Takes precedence when both DOCUMENT_TEXT_DETECTION and TEXT_DETECTION are present.
+     * @param int $maxResults
+     * @return string[]
+     */
+    public function addFeatureDocumentTextDetection($maxResults = 1)
+    {
+        return $this->addFeature("DOCUMENT_TEXT_DETECTION", $maxResults);
+    }
+
+    /**
+     * Run computer vision models to compute image safe-search properties.
+     * @param int $maxResults
+     * @return string[]
+     */
     public function addFeatureSafeSeachDetection($maxResults = 1)
     {
         return $this->addFeature("SAFE_SEARCH_DETECTION", $maxResults);
     }
 
+    /**
+     * Compute a set of image properties, such as the image's dominant colors.
+     * @param int $maxResults
+     * @return string[]
+     */
     public function addFeatureImageProperty($maxResults = 1)
     {
         return $this->addFeature("IMAGE_PROPERTIES", $maxResults);
+    }
+
+    /**
+     * Run crop hints.
+     * @param int $maxResults
+     * @return string[]
+     */
+    public function addFeatureCropHints($maxResults = 1)
+    {
+        return $this->addFeature("CROP_HINTS", $maxResults);
+    }
+
+    /**
+     * Run web detection.
+     * @param int $maxResults
+     * @return string[]
+     */
+    public function addFeatureWebDetection($maxResults = 1)
+    {
+        return $this->addFeature("WEB_DETECTION", $maxResults);
     }
 
     /**

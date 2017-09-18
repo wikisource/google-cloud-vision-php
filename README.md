@@ -15,14 +15,14 @@ Features:
 
 Requirements:
 
-* PHP >= 5.6
+* PHP ≥ 5.6
 * API key (see Google's [Getting Started](https://cloud.google.com/vision/docs/getting-started) documentation)
 
 To install, first add this to your `composer.json`:
 
 ```json
     "require": {
-        "wikisource/google-cloud-vision-php": "~1.1"
+        "wikisource/google-cloud-vision-php": "^1.2"
     }
 ```
 
@@ -35,25 +35,28 @@ use GoogleCloudVisionPHP\GoogleCloudVision;
 
 $gcv = new GoogleCloudVision();
 
-// Follow instruction from Google Cloud Vision Document
+// Get your API key from the Google Cloud Platform site.
 $gcv->setKey("[Key from Google]");
 
-$gcv->setImage("[File path]");
+// An image can be set from either a filename or URL (the default), raw data, or a Google Cloud Storage item:
+$gcv->setImage("local/filesystem/file.png");
+$gcv->setImage("https://example.org/url/to/file.png");
+$gcv->setImage(file_get_contents('local/file.png'), GoogleCloudVision::IMAGE_TYPE_RAW);
+$gcv->setImage("gs://bucket_name/object_name", GoogleCloudVision::IMAGE_TYPE_GCS);
 
-// 1 is Max result
-$gcv->addFeature("LABEL_DETECTION", 1);
-
+// Set which features you want to retrieve:
 $gcv->addFeatureUnspecified(1);
 $gcv->addFeatureFaceDetection(1);
 $gcv->addFeatureLandmarkDetection(1);
 $gcv->addFeatureLogoDetection(1);
 $gcv->addFeatureLabelDetection(1);
-$gcv->addFeatureOCR(1);
+$gcv->addFeatureTextDetection(1);
+$gcv->addFeatureDocumentTextDetection(1);
 $gcv->addFeatureSafeSeachDetection(1);
 $gcv->addFeatureImageProperty(1);
 
-//Optinal
-$gcv->setImageContext(array("languageHints"=>array("th")));
+// Optional. The API will try to guess the language if you don't set this.
+$gcv->setImageContext(['languageHints' => ['th']]);
 
 $response = $gcv->request();
 ```

@@ -2,6 +2,7 @@
 /examples/config.php
 /.phpintel
 /nbproject
+/.idea
 /vendor
 /composer.lock
 

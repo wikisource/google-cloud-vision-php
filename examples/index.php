@@ -69,19 +69,19 @@ echo "</pre>";
 $gcv = new GoogleCloudVision();
 $gcv->setKey($key);
 $gcv->setImage("images/NeutraText.gif");
-$gcv->addFeatureOCR(1);
+$gcv->addFeatureTextDetection(1);
 echo "<pre style='max-height:300px; overflow:scroll;'>";
 var_dump($gcv->request());
 echo "</pre>";
 ?>
 
-<h1>OCR in Other language</h1>
+<h1>OCR in other language (Thai)</h1>
 <img src="images/thai.gif" alt="" height="200">
 <?php
 $gcv = new GoogleCloudVision();
 $gcv->setKey($key);
 $gcv->setImage("images/thai.gif");
-$gcv->addFeatureOCR(1);
+$gcv->addFeatureTextDetection(1);
 $gcv->setImageContext(array("languageHints" => array("th")));
 echo "<pre style='max-height:300px; overflow:scroll;'>";
 print_r($gcv->request());

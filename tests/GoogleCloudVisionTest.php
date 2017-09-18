@@ -5,6 +5,7 @@
 
 namespace Wikisource\GoogleCloudVisionPHP\Tests;
 
+use Exception;
 use Wikisource\GoogleCloudVisionPHP\GoogleCloudVision;
 use Wikisource\GoogleCloudVisionPHP\LimitExceededException;
 
@@ -51,13 +52,14 @@ class GoogleCloudVisionTest extends \PHPUnit_Framework_TestCase
      * Get the API key from the config file in this directory. This is used by every test in the requires-key group.
      *
      * @return string The API key.
-     * @throws \Exception If the $key variable is not set in the config file.
+     * @throws Exception If the $key variable is not set in the config file.
      */
     protected function getApiKeyFromConfigFile()
     {
-        require __DIR__.'/config.php';
+        $testConfigFile = __DIR__.'/config.php';
+        require_once $testConfigFile;
         if (!isset($key)) {
-            throw new \Exception('Unable to load key from config.php (please set $key)');
+            throw new Exception('Unable to load key from '.$testConfigFile.' (please set $key)');
         }
         return $key;
     }
